@@ -1,6 +1,6 @@
-//index.js
+const request = require('request-promise-native');
 
-const { nextISSTimesForMyLocation } = require('./iss');
+const { nextISSTimesForMyLocation } = require('./iss_promised');
 
 //prints output
 const printPassTimes = (passTimes) => {
@@ -12,12 +12,11 @@ const printPassTimes = (passTimes) => {
   }
 };
 
-//function call for iss.js
-nextISSTimesForMyLocation((error, passTimes) => {
-  if (error) {
-    return console.log('Failed:', error);
-  }
-  printPassTimes(passTimes);
-});
-
+nextISSTimesForMyLocation()
+  .then((passTimes) => {
+    printPassTimes(passTimes);
+  })
+  .catch((error) => {
+    console.log('Failed:', error.message);
+  });
 

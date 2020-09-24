@@ -64,8 +64,34 @@ const fetchISSflyOverTimes = (coords, callback) => {
     const flyOverTimes = JSON.parse(body).response;
     callback(null, flyOverTimes);
   });
-}
+};
+
+
+//Prints flyover times in string
+const nextISSTimesForMyLocation = (callback) => {
+
+  fetchMyIP((error, ip) => {
+    if (error) {
+      callback(error, null);
+    }
+    
+    fetchCoordsByIp(ip, (error, coords) => {
+      if (error) {
+        callback(error, null);
+      }
+
+      fetchISSflyOverTimes(coords, (error, data) => {
+        if (error) {
+          callback(error, null);
+        }
+
+        callback(null, data);
+      });
+    });
+  });
+};
 
 module.exports = { fetchMyIP };
 module.exports = { fetchCoordsByIp };
 module.exports = { fetchISSflyOverTimes };
+module.exports = { nextISSTimesForMyLocation };
